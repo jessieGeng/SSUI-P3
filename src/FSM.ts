@@ -167,6 +167,9 @@ export class FSM {
     public damage() : void {
             
         // **** YOUR CODE HERE ****
+        if(this.parent){
+            this.parent.damage();
+        }
 
     }
 
@@ -180,16 +183,32 @@ export class FSM {
         // names we need to look up / bind are found in transitions: in named target 
         // state, region names in event specs, and region names in actions.
         // walk over all the transitions in all the states to get those bound
-            
+        
         // **** YOUR CODE HERE ****
+        
+        for (let state of this.states){
+            for (let transition of state.transitions){
+                transition.bindTarget(this.states)
+                transition.onEvent.bindRegion(this.regions)
+                let regionlist = this.regions
+                transition.actions.forEach(x => x.bindRegion(regionlist))
+            }
+        }
+        
 
         // start state is the first one
             
         // **** YOUR CODE HERE ****
+        this._startState = this.states[0];
 
         // need to link all regions back to this object as their parent
             
         // **** YOUR CODE HERE ****
+        for (let region of this.regions){
+            region.parent = this;
+        }
+        this.debugString;
+        
 
     }
     
@@ -200,6 +219,10 @@ export class FSM {
     public reset() {
             
         // **** YOUR CODE HERE ****
+        if (this._startState) {
+            // Reset to the start state
+            this._currentState = this._startState;  
+        }
     }
     
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -215,7 +238,13 @@ export class FSM {
         if (!this.currentState) return;
            
         // **** YOUR CODE HERE ****
-
+        // find first transition matching the given event
+        let matchedTransit = this.currentState.transitions.find(x => x.match(evtType, reg))
+        // it's actions are executed,
+        matchedTransit?.actions.forEach(x => x.execute(evtType, reg))
+        // the FSM moves to the indicated state
+        this._currentState = matchedTransit?.target
+       
     }
       
     //-------------------------------------------------------------------

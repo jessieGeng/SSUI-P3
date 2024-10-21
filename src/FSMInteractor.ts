@@ -44,6 +44,7 @@ export class FSMInteractor {
         this._fsm = fsm;
         this._x = x; this._y = y;
         this._parent = parent;
+        // this._bookkepping = []
         if (fsm) fsm.parent = this;
     }
 
@@ -58,6 +59,10 @@ export class FSMInteractor {
     public set x(v : number) {
           
         // **** YOUR CODE HERE ****
+        if (!(this._x === v)){
+            this._x = v;
+            this.damage();
+        }
     }
 
     // Y position (top) of this object within the parent Root object (and containing 
@@ -67,6 +72,10 @@ export class FSMInteractor {
     public set y(v : number) {
             
         // **** YOUR CODE HERE ****
+        if (!(this._y === v)){
+            this._y = v;
+            this.damage();
+        }
     }
 
     // Position treated as a single value
@@ -91,6 +100,10 @@ export class FSMInteractor {
     public set parent(v : Root | undefined) {
             
         // **** YOUR CODE HERE ****
+        if (!(this._parent === v)){
+            this._parent = v;
+            this.damage();
+        }
     }
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
@@ -111,6 +124,12 @@ export class FSMInteractor {
     public damage() {
            
         // **** YOUR CODE HERE ****
+        
+        if(this.parent){
+            this.parent.damage();
+        }
+        
+        
     }
     
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -124,6 +143,14 @@ export class FSMInteractor {
         if (!this.fsm) return;
 
         // **** YOUR CODE HERE ****
+        for (let region of this.fsm.regions){
+            ctx.save(); 
+            ctx.translate(region.x, region.y);
+            region.draw(ctx, showDebugging);
+            ctx.restore(); 
+        }
+        
+
     }   
 
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -141,8 +168,17 @@ export class FSMInteractor {
 
         // if we have no FSM, there is nothing to pick
         if (!this.fsm) return pickList;
-           
+        
         // **** YOUR CODE HERE ****
+        for (let region of this.fsm.regions){
+            
+            let regionX = localX - region.x
+            let regionY = localY - region.y
+            
+            if (region.pick(regionX, regionY)){
+                pickList.unshift(region)
+            }
+        }
 
         return pickList;
     }
@@ -152,6 +188,17 @@ export class FSMInteractor {
         
         // **** YOUR CODE HERE ****   
         // You will need some persistent bookkeeping for dispatchRawEvent()
+        protected _bookkeeping : Region[] = [];
+        public get bookkeeping() {return this._bookkeeping;}
+        public set bookkeeping(v : Region[]) {
+              
+            // **** YOUR CODE HERE ****
+            if (!(this._bookkeeping === v)){
+                this._bookkeeping = v;
+                this.damage();
+            }
+        }
+        
 
     // Dispatch the given "raw" event by translating it into a series of higher-level
     // events which are formulated in terms of the regions of our FSM.  "Raw" events 
@@ -177,6 +224,31 @@ export class FSMInteractor {
         if (this.fsm === undefined) return;
 
         // **** YOUR CODE HERE ****
+        let currRegions = this.pick(localX, localY)
+        let enterRegions = currRegions.filter(x => !this.bookkeeping.includes(x))
+        let exitRegions = this.bookkeeping.filter(y => !currRegions.includes(y))
+        let fsm = this.fsm
+        exitRegions.forEach(x => fsm.actOnEvent('exit', x))
+        enterRegions.forEach(x => fsm.actOnEvent('enter', x))
+        switch (what){
+            case "press":
+                currRegions.forEach(x => {
+                    // console.log(this, fsm, currRegions)
+                    fsm.actOnEvent('press', x)})
+                break;
+            case "move":
+                currRegions.forEach(x => fsm.actOnEvent('move_inside', x))
+                break;
+            case "release":
+                if (currRegions.length === 0){
+                    fsm.actOnEvent('release_none')
+                }else{
+                    currRegions.forEach(x => fsm.actOnEvent('release', x))
+                }
+                break;
+        }
+        this.bookkeeping = currRegions;
+
     }
 
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .

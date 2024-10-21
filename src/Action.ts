@@ -84,6 +84,41 @@ export class Action {
         if (this._actType === 'none') return;
         
         // **** YOUR CODE HERE ****
+        switch (this._actType) {
+            case 'set_image':
+                // set the image of the given region (or rather where it is to be 
+//                  loaded from) based on the parameter value.  The parameter can be 
+//                 "" for no image (which has the same effect as clear_image).
+                if (this.onRegion){
+                    this.onRegion.imageLoc = this.param;
+                }
+                break;
+            
+            case 'clear_image':
+                //   - clear_image set the image of the given region to empty/none. 
+                if (this.onRegion){
+                    this.onRegion.imageLoc = "";
+                }
+                break;
+    
+            case 'print':
+                // Print the parameter value
+                console.log(this._param); 
+                break;
+    
+            case 'print_event':
+                console.log(this._param);
+                if (evtReg) {
+                    // Log the current event
+                    console.log("Current event: ", evtType, evtReg.debugString()); 
+                    
+                }
+                break;
+    
+            default:
+                throw new Error(`Unknown action type: ${this._actType}`);
+        }
+       
     }
 
      //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -93,6 +128,12 @@ export class Action {
     public bindRegion(regionList : readonly Region[]) : void {
             
         // **** YOUR CODE HERE ****
+        for (let region of regionList){
+            if (region.name === this.onRegionName){
+                this._onRegion  = region;
+                return;
+            }
+        }
         
         // ok to have no matching region for some actions
         if (this.actType === 'none' || this.actType === 'print' || 

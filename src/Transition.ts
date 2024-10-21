@@ -88,25 +88,29 @@ export class Transition {
     // by an event type and optional region; see EventSpec for details on available
     // event types and their meaning).
     public match(evtType : EventType, regn? : Region) : boolean {
-           
+        
         // **** YOUR CODE HERE ****
-
-        // **** Remove this, it's just here to get this file to compile
-        return false;
+        return this.onEvent.match(evtType, regn)
+       
     }
     
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
     
     // Attempt to look up the name of the target state for this transition and 
-    // return the actual State object, then assign that to this._target.  _target
+    //  then assign that to this._target.  _target
     // will remain undefined if the target name does not match any actual states in 
     // the FSM (in which case an error message will also be generted using Err.emit()).
     public bindTarget(stateList : readonly State[]) : void {
             
         // **** YOUR CODE HERE ****
-
-        // no matching state name, so generate an error message
-        Err.emit(`State '${this._targetName}' in transition does not match any state.`);
+        const targetState = stateList.find(state => state.name === this._targetName);
+        if (targetState) {
+            this._target = targetState;
+        }else{
+             // no matching state name, so generate an error message
+            Err.emit(`State '${this._targetName}' in transition does not match any state.`);
+        }
+       
     }
    
     //-------------------------------------------------------------------

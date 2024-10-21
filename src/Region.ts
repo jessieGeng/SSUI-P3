@@ -93,6 +93,10 @@ export class Region {
     public set x(v : number) {
             
         // **** YOUR CODE HERE ****
+        if (!(this._x === v)){
+            this._x = v;
+            this.damage();
+        }
     }
        
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -103,6 +107,10 @@ export class Region {
     public set y(v : number) {
             
         // **** YOUR CODE HERE ****
+        if (!(this._y === v)){
+            this._y = v;
+            this.damage();
+        }
     }   
 
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -114,6 +122,10 @@ export class Region {
     public set w(v : number) {
             
         // **** YOUR CODE HERE ****
+        if (!(this._w === v)){
+            this._w = v;
+            this.damage();
+        }
     }  
 
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -125,6 +137,10 @@ export class Region {
     public set h(v : number) {
             
         // **** YOUR CODE HERE ****
+        if (!(this._h === v)){
+            this._h = v;
+            this.damage();
+        }
     }  
 
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -156,6 +172,10 @@ export class Region {
     public set parent(v : FSM | undefined) {
             
         // **** YOUR CODE HERE ****
+        if (!(this._parent === v)){
+            this._parent = v;
+            this.damage();
+        }
     }
 
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -219,9 +239,21 @@ export class Region {
     public pick(localX : number, localY : number) : boolean {
             
         // **** YOUR CODE HERE ****
+        // let left = this.x
+        // let top = this.y
+        // let right = this.x+this.w
+        // let bottom = this.y + this.h
+        // // console.log("pick left:", this.x)
+        // //     console.log("pick top:", this.y)
+        // //     console.log("pick right:", right)
+        // //     console.log("pick bottom:", left)
+        // //     console.log("pick localX:",localX)
+        // //     console.log("pick localY", localY)
+        // return (left <= localX) &&(localX <= right) && (top <= localY) &&(localY <= bottom)
+        return (localX <= this.w) && (localY <= this.h)
         
-        // **** Remove this, it's just here to make this compile as-is
-        return false;
+        
+        
     }
 
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -237,6 +269,8 @@ export class Region {
         if (this.loaded && !this.loadError && this.image) {
                
             // **** YOUR CODE HERE ****
+            ctx.drawImage(this.image, 0,0);
+            
 
         }
         
@@ -257,6 +291,11 @@ export class Region {
     public damage() {
             
         // **** YOUR CODE HERE ****
+        if (this.parent) {
+            // Notify parent to redraw
+            this.parent.damage(); 
+        }
+
     }
 
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .

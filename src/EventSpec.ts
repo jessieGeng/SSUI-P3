@@ -85,6 +85,13 @@ export class EventSpec {
         }
      
         // **** YOUR CODE HERE ****
+        for (let rg of regionList){
+            if (rg.name === this.regionName){
+                this._region  = rg;
+                return;
+            }
+        }
+        this._region = undefined;
 
         // we didn't match any region, that's ok for some forms that don't need a region
         if (this.evtType === 'nevermatch') return;
@@ -102,11 +109,27 @@ export class EventSpec {
     // by an event type (evtType) and an optional associated region (regn).  If 
     // our region is undefined and region name is "*", we will match to any region.
     public match(evtType : EventType, regn? : Region) : boolean {
-          
+        
         // **** YOUR CODE HERE ****
-
-        // **** Remove this: just here to get it to compile... ****
+        // nevermatch  matches no events (primarily used to patch up values loaded from 
+        // incorrectly formatted/typed json)
+        if(this.evtType === 'nevermatch'){
+            return false;
+        }
+        //  any matches any event type which occurs "over" the given region
+        //  (or over any region if "*" was coded for the region).
+        if(this.evtType === 'any'){
+            return true;
+        }
+        // check if the event type matches, and Either: if the region matches when have a region param, Or: if the region is undefined
+        if ((this.evtType === evtType) && ((this.region === regn) || (this.region === undefined && this.regionName === "*"))){
+            return true;
+        }
+       
         return false;
+
+
+        
     }
     
     //-------------------------------------------------------------------
@@ -117,7 +140,7 @@ export class EventSpec {
     public debugTag() : string {
         return `EventSpec(${this.evtType} ${this.regionName})`;
     }
-
+    
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
     // Create a human readable string displaying this object for debugging purposes
