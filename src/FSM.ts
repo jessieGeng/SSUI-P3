@@ -167,6 +167,7 @@ export class FSM {
     public damage() : void {
             
         // **** YOUR CODE HERE ****
+        // pass damage info to parent
         if(this.parent){
             this.parent.damage();
         }

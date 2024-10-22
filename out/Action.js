@@ -35,8 +35,7 @@ export class Action {
         switch (this._actType) {
             case 'set_image':
                 // set the image of the given region (or rather where it is to be 
-                //                  loaded from) based on the parameter value.  The parameter can be 
-                //                 "" for no image (which has the same effect as clear_image).
+                //loaded from) based on the parameter value. 
                 if (this.onRegion) {
                     this.onRegion.imageLoc = this.param;
                 }
@@ -52,11 +51,9 @@ export class Action {
                 console.log(this._param);
                 break;
             case 'print_event':
+                // print the parameter value followed by a dump of the current event 
                 console.log(this._param);
-                if (evtReg) {
-                    // Log the current event
-                    console.log("Current event: ", evtType, evtReg.debugString());
-                }
+                console.log("Current event: ", evtType, evtReg === null || evtReg === void 0 ? void 0 : evtReg.debugString());
                 break;
             default:
                 throw new Error(`Unknown action type: ${this._actType}`);
@@ -67,6 +64,7 @@ export class Action {
     // (from the whole FSM), assiging the Region object to this._onRegion if found.
     bindRegion(regionList) {
         // **** YOUR CODE HERE ****
+        // loop over the region list to find the one which matches name for this region
         for (let region of regionList) {
             if (region.name === this.onRegionName) {
                 this._onRegion = region;

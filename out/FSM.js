@@ -89,6 +89,7 @@ export class FSM {
     // 
     damage() {
         // **** YOUR CODE HERE ****
+        // pass damage info to parent
         if (this.parent) {
             this.parent.damage();
         }

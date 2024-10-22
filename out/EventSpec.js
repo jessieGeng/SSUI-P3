@@ -33,12 +33,15 @@ export class EventSpec {
             return;
         }
         // **** YOUR CODE HERE ****
+        // loop over the list to find the Region object corresponding to our named region 
         for (let rg of regionList) {
             if (rg.name === this.regionName) {
+                // if found, assign and the function ends
                 this._region = rg;
                 return;
             }
         }
+        // if not found,  _region is set to undefined.
         this._region = undefined;
         // we didn't match any region, that's ok for some forms that don't need a region
         if (this.evtType === 'nevermatch')

@@ -48,6 +48,7 @@ export class Region {
     get x() { return this._x; }
     set x(v) {
         // **** YOUR CODE HERE ****
+        // if x changes, update value and redraw
         if (!(this._x === v)) {
             this._x = v;
             this.damage();
@@ -56,6 +57,7 @@ export class Region {
     get y() { return this._y; }
     set y(v) {
         // **** YOUR CODE HERE ****
+        // if y changes, update value and redraw
         if (!(this._y === v)) {
             this._y = v;
             this.damage();
@@ -64,6 +66,7 @@ export class Region {
     get w() { return this._w; }
     set w(v) {
         // **** YOUR CODE HERE ****
+        // if w changes, update value and redraw
         if (!(this._w === v)) {
             this._w = v;
             this.damage();
@@ -72,6 +75,7 @@ export class Region {
     get h() { return this._h; }
     set h(v) {
         // **** YOUR CODE HERE ****
+        // if h changes, update value and redraw
         if (!(this._h === v)) {
             this._h = v;
             this.damage();
@@ -93,6 +97,7 @@ export class Region {
     get parent() { return this._parent; }
     set parent(v) {
         // **** YOUR CODE HERE ****
+        // if parent changes, update value and redraw
         if (!(this._parent === v)) {
             this._parent = v;
             this.damage();
@@ -124,18 +129,9 @@ export class Region {
     // coordinates of this object) should be considered "inside" or "over" this region.
     pick(localX, localY) {
         // **** YOUR CODE HERE ****
-        // let left = this.x
-        // let top = this.y
-        // let right = this.x+this.w
-        // let bottom = this.y + this.h
-        // // console.log("pick left:", this.x)
-        // //     console.log("pick top:", this.y)
-        // //     console.log("pick right:", right)
-        // //     console.log("pick bottom:", left)
-        // //     console.log("pick localX:",localX)
-        // //     console.log("pick localY", localY)
-        // return (left <= localX) &&(localX <= right) && (top <= localY) &&(localY <= bottom)
-        return (localX <= this.w) && (localY <= this.h);
+        // localX, localY already translated to region coordinate in FSMInteractors
+        // check if the cursor is in the w, h boundary
+        return (0 <= localX) && (localX <= this.w) && (0 <= localY) && (localY <= this.h);
     }
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
     // Draw the image for this region using the givn drawing context.  The context 
@@ -148,6 +144,7 @@ export class Region {
         // if we have a valid loaded image, draw it
         if (this.loaded && !this.loadError && this.image) {
             // **** YOUR CODE HERE ****
+            // Draw the image for this region using the givn drawing context. 
             ctx.drawImage(this.image, 0, 0);
         }
         //draw a frame indicating the (input) bounding box if requested

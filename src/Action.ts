@@ -87,8 +87,7 @@ export class Action {
         switch (this._actType) {
             case 'set_image':
                 // set the image of the given region (or rather where it is to be 
-//                  loaded from) based on the parameter value.  The parameter can be 
-//                 "" for no image (which has the same effect as clear_image).
+                //loaded from) based on the parameter value. 
                 if (this.onRegion){
                     this.onRegion.imageLoc = this.param;
                 }
@@ -107,12 +106,9 @@ export class Action {
                 break;
     
             case 'print_event':
-                console.log(this._param);
-                if (evtReg) {
-                    // Log the current event
-                    console.log("Current event: ", evtType, evtReg.debugString()); 
-                    
-                }
+                // print the parameter value followed by a dump of the current event 
+                console.log(this._param); 
+                console.log("Current event: ", evtType, evtReg?.debugString()); 
                 break;
     
             default:
@@ -128,6 +124,7 @@ export class Action {
     public bindRegion(regionList : readonly Region[]) : void {
             
         // **** YOUR CODE HERE ****
+        // loop over the region list to find the one which matches name for this region
         for (let region of regionList){
             if (region.name === this.onRegionName){
                 this._onRegion  = region;

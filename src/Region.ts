@@ -93,6 +93,7 @@ export class Region {
     public set x(v : number) {
             
         // **** YOUR CODE HERE ****
+        // if x changes, update value and redraw
         if (!(this._x === v)){
             this._x = v;
             this.damage();
@@ -107,6 +108,7 @@ export class Region {
     public set y(v : number) {
             
         // **** YOUR CODE HERE ****
+        // if y changes, update value and redraw
         if (!(this._y === v)){
             this._y = v;
             this.damage();
@@ -122,6 +124,7 @@ export class Region {
     public set w(v : number) {
             
         // **** YOUR CODE HERE ****
+        // if w changes, update value and redraw
         if (!(this._w === v)){
             this._w = v;
             this.damage();
@@ -137,6 +140,7 @@ export class Region {
     public set h(v : number) {
             
         // **** YOUR CODE HERE ****
+        // if h changes, update value and redraw
         if (!(this._h === v)){
             this._h = v;
             this.damage();
@@ -172,6 +176,7 @@ export class Region {
     public set parent(v : FSM | undefined) {
             
         // **** YOUR CODE HERE ****
+        // if parent changes, update value and redraw
         if (!(this._parent === v)){
             this._parent = v;
             this.damage();
@@ -239,18 +244,9 @@ export class Region {
     public pick(localX : number, localY : number) : boolean {
             
         // **** YOUR CODE HERE ****
-        // let left = this.x
-        // let top = this.y
-        // let right = this.x+this.w
-        // let bottom = this.y + this.h
-        // // console.log("pick left:", this.x)
-        // //     console.log("pick top:", this.y)
-        // //     console.log("pick right:", right)
-        // //     console.log("pick bottom:", left)
-        // //     console.log("pick localX:",localX)
-        // //     console.log("pick localY", localY)
-        // return (left <= localX) &&(localX <= right) && (top <= localY) &&(localY <= bottom)
-        return (localX <= this.w) && (localY <= this.h)
+        // localX, localY already translated to region coordinate in FSMInteractors
+        // check if the cursor is in the w, h boundary
+        return (0<=localX ) && (localX <= this.w) && (0<=localY)&&(localY <= this.h)
         
         
         
@@ -269,6 +265,7 @@ export class Region {
         if (this.loaded && !this.loadError && this.image) {
                
             // **** YOUR CODE HERE ****
+            // Draw the image for this region using the givn drawing context. 
             ctx.drawImage(this.image, 0,0);
             
 
