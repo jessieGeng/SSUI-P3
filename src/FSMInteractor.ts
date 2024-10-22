@@ -59,6 +59,7 @@ export class FSMInteractor {
     public set x(v : number) {
           
         // **** YOUR CODE HERE ****
+        // if x changes, update value and redraw
         if (!(this._x === v)){
             this._x = v;
             this.damage();
@@ -72,6 +73,7 @@ export class FSMInteractor {
     public set y(v : number) {
             
         // **** YOUR CODE HERE ****
+        // if y changes, update value and redraw
         if (!(this._y === v)){
             this._y = v;
             this.damage();
@@ -100,6 +102,7 @@ export class FSMInteractor {
     public set parent(v : Root | undefined) {
             
         // **** YOUR CODE HERE ****
+        // if parent changes, update value and redraw
         if (!(this._parent === v)){
             this._parent = v;
             this.damage();
@@ -126,6 +129,7 @@ export class FSMInteractor {
         // **** YOUR CODE HERE ****
         
         if(this.parent){
+            // Notify parent to redraw
             this.parent.damage();
         }
         
@@ -143,10 +147,14 @@ export class FSMInteractor {
         if (!this.fsm) return;
 
         // **** YOUR CODE HERE ****
+        // loop to draw each region
         for (let region of this.fsm.regions){
+            // save to translate back for next region
             ctx.save(); 
+            // translate to the coordinate of current region
             ctx.translate(region.x, region.y);
             region.draw(ctx, showDebugging);
+            // translate back
             ctx.restore(); 
         }
         
@@ -170,11 +178,12 @@ export class FSMInteractor {
         if (!this.fsm) return pickList;
         
         // **** YOUR CODE HERE ****
+        // check for each region to see if it is currently picked
         for (let region of this.fsm.regions){
-            
+            // translate to region coordinate
             let regionX = localX - region.x
             let regionY = localY - region.y
-            
+            // if in this region, add to the front of pickList
             if (region.pick(regionX, regionY)){
                 pickList.unshift(region)
             }
@@ -188,11 +197,12 @@ export class FSMInteractor {
         
         // **** YOUR CODE HERE ****   
         // You will need some persistent bookkeeping for dispatchRawEvent()
+        // a list of region to record what are the regions that we were in
+        // when last event happened, to compare to the regions we are currently in
+        // so determin which regions are new(entered) and which regions are exited
         protected _bookkeeping : Region[] = [];
         public get bookkeeping() {return this._bookkeeping;}
         public set bookkeeping(v : Region[]) {
-              
-            // **** YOUR CODE HERE ****
             if (!(this._bookkeeping === v)){
                 this._bookkeeping = v;
                 this.damage();
@@ -224,28 +234,41 @@ export class FSMInteractor {
         if (this.fsm === undefined) return;
 
         // **** YOUR CODE HERE ****
+        // check what regions we are corrently in
         let currRegions = this.pick(localX, localY)
+        // compare to the regions we were in before
+        // if in current region but not in past region, then these regions are newly entered
         let enterRegions = currRegions.filter(x => !this.bookkeeping.includes(x))
+        // if in past region but no longer in current region, then these regions are exited
         let exitRegions = this.bookkeeping.filter(y => !currRegions.includes(y))
+        // avoid messing up this refering in lambda expression
         let fsm = this.fsm
+        // for exited regions, dispatch to exit event
         exitRegions.forEach(x => fsm.actOnEvent('exit', x))
+        // for new entered regions, dispatch to enter event
         enterRegions.forEach(x => fsm.actOnEvent('enter', x))
         switch (what){
             case "press":
-                currRegions.forEach(x => {
-                    // console.log(this, fsm, currRegions)
-                    fsm.actOnEvent('press', x)})
+                // Dispatch press event to all current regions
+                currRegions.forEach(x => fsm.actOnEvent('press', x))
                 break;
             case "move":
+                // moving in current regions
                 currRegions.forEach(x => fsm.actOnEvent('move_inside', x))
                 break;
             case "release":
-                if (currRegions.length === 0){
-                    fsm.actOnEvent('release_none')
-                }else{
+                if (currRegions.length > 0){
+                    // released in current regions
                     currRegions.forEach(x => fsm.actOnEvent('release', x))
+                    
+                }else{
+                    // --------------------------------------------------------------NEED FIX
+                    // we released in undefined region.
+                    fsm.actOnEvent('release_none')
+                    
                 }
                 break;
+                
         }
         this.bookkeeping = currRegions;
 

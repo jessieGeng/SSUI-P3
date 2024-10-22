@@ -104,23 +104,27 @@ export class FSM {
         // state, region names in event specs, and region names in actions.
         // walk over all the transitions in all the states to get those bound
         // **** YOUR CODE HERE ****
+        // loop through all transitions of all states
         for (let state of this.states) {
             for (let transition of state.transitions) {
+                // bind  transitions  named target state 
                 transition.bindTarget(this.states);
+                // bind region names in event specs
                 transition.onEvent.bindRegion(this.regions);
+                // to avoid messing up this referring
                 let regionlist = this.regions;
+                // bind region names in all actions.
                 transition.actions.forEach(x => x.bindRegion(regionlist));
             }
         }
+        // **** YOUR CODE HERE ****
         // start state is the first one
-        // **** YOUR CODE HERE ****
         this._startState = this.states[0];
-        // need to link all regions back to this object as their parent
         // **** YOUR CODE HERE ****
+        // need to link all regions back to this object as their parent
         for (let region of this.regions) {
             region.parent = this;
         }
-        this.debugString;
     }
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
     // Reset the FSM to be in its start state.  Note: this does not reset
