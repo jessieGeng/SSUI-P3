@@ -150,10 +150,12 @@ export class FSM {
         // **** YOUR CODE HERE ****
         // find first transition matching the given event
         let matchedTransit = this.currentState.transitions.find(x => x.match(evtType, reg));
-        // it's actions are executed,
-        matchedTransit === null || matchedTransit === void 0 ? void 0 : matchedTransit.actions.forEach(x => x.execute(evtType, reg));
-        // the FSM moves to the indicated state
-        this._currentState = matchedTransit === null || matchedTransit === void 0 ? void 0 : matchedTransit.target;
+        if (matchedTransit) {
+            // it's actions are executed,
+            matchedTransit.actions.forEach(x => x.execute(evtType, reg));
+            // the FSM moves to the indicated state
+            this._currentState = matchedTransit.target;
+        }
     }
     //-------------------------------------------------------------------
     // Debugging Support

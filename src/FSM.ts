@@ -242,15 +242,17 @@ export class FSM {
     // the event is considered "consumed", and no additional transitions are considered.
     public actOnEvent(evtType : EventType, reg? : Region) {
         // if we never got the current state bound (maybe a bad json FSM?) bail out
-        if (!this.currentState) return;
-           
+        if (!this.currentState) return;   
         // **** YOUR CODE HERE ****
         // find first transition matching the given event
         let matchedTransit = this.currentState.transitions.find(x => x.match(evtType, reg))
-        // it's actions are executed,
-        matchedTransit?.actions.forEach(x => x.execute(evtType, reg))
-        // the FSM moves to the indicated state
-        this._currentState = matchedTransit?.target
+        if (matchedTransit){
+            // it's actions are executed,
+            matchedTransit.actions.forEach(x => x.execute(evtType, reg))
+            // the FSM moves to the indicated state
+            this._currentState = matchedTransit.target
+        }
+        
        
     }
       

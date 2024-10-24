@@ -114,11 +114,9 @@ export class EventSpec {
     public match(evtType : EventType, regn? : Region) : boolean {
         
         // **** YOUR CODE HERE ****
-        // nevermatch  matches no events (primarily used to patch up values loaded from 
-        // incorrectly formatted/typed json)
-        if(this.evtType === 'nevermatch'){
-            return false;
-        }
+        // console.log("evtType, region:", evtType, regn)
+        // console.log("this evtType, region:", this.evtType, this.region)
+        
         //  any matches any event type which occurs "over" the given region
         //  (or over any region if "*" was coded for the region).
         if(this.evtType === 'any'){
@@ -128,6 +126,12 @@ export class EventSpec {
         if ((this.evtType === evtType) && ((this.region === regn) || (this.region === undefined && this.regionName === "*"))){
             return true;
         }
+        // nevermatch  matches no events (primarily used to patch up values loaded from 
+        // incorrectly formatted/typed json)
+        if(this.evtType === 'nevermatch'){
+            return false;
+        }
+        
        
         return false;
 

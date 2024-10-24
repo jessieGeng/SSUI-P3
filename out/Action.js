@@ -52,8 +52,7 @@ export class Action {
                 break;
             case 'print_event':
                 // print the parameter value followed by a dump of the current event 
-                console.log(this._param);
-                console.log("Current event: ", evtType, evtReg === null || evtReg === void 0 ? void 0 : evtReg.debugString());
+                console.log("Current event: ", this._param, evtType, evtReg === null || evtReg === void 0 ? void 0 : evtReg.debugString());
                 break;
             default:
                 throw new Error(`Unknown action type: ${this._actType}`);

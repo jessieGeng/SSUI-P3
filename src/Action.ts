@@ -107,8 +107,7 @@ export class Action {
     
             case 'print_event':
                 // print the parameter value followed by a dump of the current event 
-                console.log(this._param); 
-                console.log("Current event: ", evtType, evtReg?.debugString()); 
+                console.log("Current event: ", this._param, evtType, evtReg?.debugString()); 
                 break;
     
             default:

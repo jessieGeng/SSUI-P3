@@ -216,7 +216,6 @@ export class FSMInteractor {
                     currRegions.forEach(x => fsm.actOnEvent('release', x));
                 }
                 else {
-                    // --------------------------------------------------------------NEED FIX
                     // we released in undefined region.
                     fsm.actOnEvent('release_none');
                 }

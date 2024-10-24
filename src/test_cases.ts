@@ -28,6 +28,7 @@ export function runTests() {
 	test1();
 	test2();
 	test3();
+	test4();
 
 	console.log("Test is set up...");
 }
@@ -73,6 +74,12 @@ function test3() {
 	let fsmInt = new FSMInteractor(undefined, 400,0);
 	root.addChild(fsmInt);
 	fsmInt.startLoadFromJson("./fsm_json/stick.json");
+}
+
+function test4() {
+	let fsmInt = new FSMInteractor(undefined, 100,400);
+	root.addChild(fsmInt);
+	fsmInt.startLoadFromJson("./fsm_json/test2.json");
 }
 
 //-------------------------------------------------------------------
