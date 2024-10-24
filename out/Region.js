@@ -147,7 +147,7 @@ export class Region {
             // if it is the line region, draw a line to represent it
             if (this.name === "line") {
                 ctx.strokeStyle = 'black';
-                ctx.strokeRect(25, 0, 1, this.h);
+                ctx.strokeRect(25, 90, 1, this.h);
                 return;
             }
             // make the picture resized by our region size.

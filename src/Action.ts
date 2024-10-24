@@ -22,7 +22,7 @@ import { Check } from "./Check.js";
 //===================================================================
 
 // A type for the actions we support, along with correponding strings
-export type ActionType = 'set_image' |  'clear_image' | 'none' | 'print' | 'print_event' | 'balloon_bigger' | 'balloon_rest' | 'hand_move' | 'line_shorter' | 'hand_rest' | 'line_rest';
+export type ActionType = 'set_image' |  'clear_image' | 'none' | 'print' | 'print_event' | 'balloon_bigger' |'balloon_rest'| 'balloon_rest' | 'hand_move' | 'line_shorter' | 'hand_rest' | 'line_rest' ;
 const actionTypeStrings = ['set_image',  'clear_image', 'none', 'print', 'print_event', 'balloon_bigger', 'balloon_rest','hand_move', 'line_shorter', 'hand_rest', 'line_rest'];
 
 // The type we are expecting to get back from decoding json for an Action
@@ -107,58 +107,67 @@ export class Action {
     
             case 'print_event':
                 // print the parameter value followed by a dump of the current event 
-             
                 console.log("Current event: ", this._param, evtType, evtReg?.debugString()); 
                 break;
 
             case 'balloon_bigger':
                 // when we are inflating the balloon, make the picture of the balloon bigger
                 if (this.onRegion){
+                    // if the balloon already boom... we cannot inflate it.
+                    if(this.onRegion.imageLoc === "./images/boom.png"){
+                        break;
+                    }
                     // modify x and y such that it looks like the balloon is still on the same position
                     this.onRegion.x -= 5;
                     this.onRegion.y -= 10;
                     this.onRegion.w += 10;
                     this.onRegion.h += 10;
+                    // when reach a random value it will boom...randomly.
+                    if(this.onRegion.w > (Math.floor(Math.random() * 1000)+100)){
+                        this.onRegion.imageLoc = this.param;
+                    }
                 }
                 break;
 
             case 'hand_move':
                 // when we are inflating the balloon, make the hand move up
                 if (this.onRegion){
-                    this.onRegion.y -= 5;
+                    this.onRegion.y -= 10;
                 }
                 break;
 
             case 'line_shorter':
                 // when we are inflating the balloon, make the line shorter
                 if (this.onRegion){
-                    this.onRegion.h -= 5;
+                    this.onRegion.h -= 10;
                 }
                 break;
 
             case 'balloon_rest':
                 if (this.onRegion){
-                    // when we are inflating the balloon, make the picture same size
+                    // reset the balloon to original params
                     this.onRegion.x = 0;
                     this.onRegion.y = 0;
                     this.onRegion.w = 50;
                     this.onRegion.h = 50;
                 }
                 break;
+
             case 'hand_rest':
                 if (this.onRegion){
-                    // when we are inflating the balloon, make the picture same size
+                    // reset the handle to original params
                     this.onRegion.x = 15;
                     this.onRegion.y = 190;
                     this.onRegion.w = 20;
                     this.onRegion.h = 20;
                 }
                 break;
+
             case 'line_rest':
                 if (this.onRegion){
-                    // when we are inflating the balloon, make the picture same size
+                    // reset the line to original params
                     this.onRegion.x = 0;
-                    this.onRegion.y = 90;
+                    this.onRegion.y = 0;
                     this.onRegion.w = 100;
                     this.onRegion.h = 100;
                 }
