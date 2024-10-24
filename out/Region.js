@@ -144,6 +144,17 @@ export class Region {
         // if we have a valid loaded image, draw it
         if (this.loaded && !this.loadError && this.image) {
             // **** YOUR CODE HERE ****
+            // if it is the line region, draw a line to represent it
+            if (this.name === "line") {
+                ctx.strokeStyle = 'black';
+                ctx.strokeRect(25, 0, 1, this.h);
+                return;
+            }
+            // make the picture resized by our region size.
+            if ((this.name === "balloon") || (this.name === "boom") || this.name === "reset") {
+                ctx.drawImage(this.image, 0, 0., this.w, this.h);
+                return;
+            }
             // Draw the image for this region using the givn drawing context. 
             ctx.drawImage(this.image, 0, 0);
         }

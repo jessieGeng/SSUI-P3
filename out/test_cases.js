@@ -59,9 +59,9 @@ function test3() {
     fsmInt.startLoadFromJson("./fsm_json/stick.json");
 }
 function test4() {
-    let fsmInt = new FSMInteractor(undefined, 100, 400);
+    let fsmInt = new FSMInteractor(undefined, 170, 400);
     root.addChild(fsmInt);
-    fsmInt.startLoadFromJson("./fsm_json/test2.json");
+    fsmInt.startLoadFromJson("./fsm_json/test4.json");
 }
 //-------------------------------------------------------------------
 //# sourceMappingURL=test_cases.js.map
