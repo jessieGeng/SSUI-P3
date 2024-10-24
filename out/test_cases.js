@@ -59,6 +59,10 @@ function test3() {
     fsmInt.startLoadFromJson("./fsm_json/stick.json");
 }
 function test4() {
+    // this is the creative part
+    // please use the pump to inflate my magic balloon 
+    // it may boom at any time...
+    // if you boom, you can reset.
     let fsmInt = new FSMInteractor(undefined, 170, 400);
     root.addChild(fsmInt);
     fsmInt.startLoadFromJson("./fsm_json/test4.json");

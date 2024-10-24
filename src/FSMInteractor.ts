@@ -154,6 +154,7 @@ export class FSMInteractor {
             // translate to the coordinate of current region
             ctx.translate(region.x, region.y);
             region.draw(ctx, showDebugging);
+            
             // translate back
             ctx.restore(); 
         }

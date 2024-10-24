@@ -148,6 +148,10 @@ export class Region {
             if (this.name === "line") {
                 ctx.strokeStyle = 'black';
                 ctx.strokeRect(25, 90, 1, this.h);
+                // instructions
+                ctx.fillText("please use the pump to inflate my magic balloon", 0, 230);
+                ctx.fillText("It may boom at any time...", 0, 240);
+                ctx.fillText("*pull up the small square (handle)*", 0, 250);
                 return;
             }
             // make the picture resized by our region size.
